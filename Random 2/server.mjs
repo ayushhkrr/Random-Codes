@@ -56,11 +56,12 @@ const server = http.createServer((req, res) => {
 
       delete users[id]
     
-    res.statusCode = 204
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'plain/text')
     res.end('User got deleted')
     }else {
       res.statusCode = 404
-      req.setHeader('Content-Type', 'application/json')
+      res.setHeader('Content-Type', 'application/json')
       res.end(JSON.stringify({error: 'user not found'}))
     }
   }
