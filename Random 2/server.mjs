@@ -20,7 +20,7 @@ const server = http.createServer((req, res) => {
   if (req.url === "/data" && req.method === "GET") {
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ "Data about user": users }));
+    res.end(JSON.stringify({ "Users": users }));
   } else if (req.url === "/insert" && req.method === "POST") {
     let body = "";
     req.on("data", (chunk) => {
@@ -28,6 +28,8 @@ const server = http.createServer((req, res) => {
     });
     req.on("end", () => {
       const parseData = JSON.parse(body);
+      const newId = `user${Object.keys(users).length+1}`
+      users[newId] = parseData
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify({ inserted: parseData }));
     });
