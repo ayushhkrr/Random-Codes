@@ -7,6 +7,6 @@ const urlSchema = new mongoose.Schema({
    date: {type: Number, default: Date.now}
 })
 
-const Url = model.Schema('Url', urlSchema)
+const Url = mongoose.model('Url', urlSchema)
 export default Url
 
