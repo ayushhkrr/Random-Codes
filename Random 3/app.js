@@ -22,3 +22,28 @@ const connectdb = async ()=>{
 }
 
 connectdb()
+app.post('/shortener', async(req, res)=>{
+    const {longUrl} = req.body
+    const baseUrl = `http://localhost:${process.env.PORT}`
+
+    try{
+        let url = await Url.findone({longUrl})
+        if(url){
+            res.json(url)
+        }else {
+            const urlCode = shortid.generate()
+            const shortUrl = `${baseUrl}/${urlCode}`
+            url = new url ({
+                longUrl,
+                shortUrl,
+                urlCode,
+                date: new Date()
+            })
+            await url.save()
+            res.json(url)
+        }
+    }catch(err){
+        console.error(err)
+        res.status(500).json('Server error')
+    }
+})
