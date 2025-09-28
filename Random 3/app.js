@@ -43,10 +43,10 @@ app.post("/shortener", async (req, res) => {
       await url.save();
       res.json(url);
     }
-} catch (err) {
+  } catch (err) {
     console.error(err);
     res.status(500).json("Server error");
-}
+  }
 });
 app.get("/all-links", async (req, res) => {
   try {
@@ -68,6 +68,19 @@ app.get("/:transfer", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json("server error");
+  }
+});
+app.delete("/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteUrl = await Url.findByIdAndDelete(id);
+    if (!deleteUrl) {
+      return res.status(404).json({ message: "URL not found" });
+    }
+    res.json({ message: "Url Sucessfully Deleted" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ errror: "Server Error" });
   }
 });
 app.listen(PORT, () => {
